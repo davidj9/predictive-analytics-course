@@ -9,7 +9,7 @@ Lesson 1: Introduction to R
 - Matrices
 - Lists
 - Dataframes
-- 
+  
 [code](https://github.com/davidj9/predictive-analytics-course/blob/main/class1-introduction-to-R.R)
 
 #Assignments
