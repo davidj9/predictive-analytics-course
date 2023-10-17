@@ -1,2 +1,2 @@
-# predictive-analytics-course
-This is a repository.
+# Predictive Analytics Course Repository
+This repository consists of code for the Predictive Analytics course at SAIT college.
