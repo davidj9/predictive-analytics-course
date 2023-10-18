@@ -13,4 +13,4 @@ Lesson 1: Introduction to R
 [code](https://github.com/davidj9/predictive-analytics-course/blob/main/class1-introduction-to-R.R)
 
 #Assignments
-- [Assignment 1 Working with Dataframes]()
+- [Assignment 1 Working with Dataframes](https://github.com/davidj9/predictive-analytics-course/blob/main/assignment1.R)
