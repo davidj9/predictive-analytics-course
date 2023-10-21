@@ -111,3 +111,32 @@ titanic %>%
   labs(title="Fares by class boxplot",
        x = "Passenger Class",
        y = "Fare Paid")
+
+# Bar chart of survivors by embark_town
+titanic %>% 
+  drop_na(embark_town) %>%
+  ggplot(aes(embark_town, fill=survived)) +
+  geom_bar(alpha = 0.5) +
+  # facet_wrap(~gender) +
+  labs(title="Survivors by Embarkation Town",
+       x = "Embarkation Town",
+       y = "Count of people")
+
+# Bar chart of non-survivors by class
+titanic %>% 
+  filter(survived == 0) %>% 
+  ggplot(aes(class, fill=survived)) +
+  geom_bar(alpha = 0.5) +
+  # facet_wrap(~gender) +
+  labs(title="Non-Survivors by Class",
+       x = "Class",
+       y = "Count of people")
+
+# Histogram of adult male survivor by age - use backup to avoid mean age distortion
+titanic_backup %>% 
+  filter(survived == 1, adult_male == TRUE) %>% 
+  ggplot(mapping=aes(x=age)) +
+  geom_histogram() +
+  labs(title="Age of Adult Male Survivors",
+       x = "Age",
+       y = "Count of people")
