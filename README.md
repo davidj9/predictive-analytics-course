@@ -14,3 +14,4 @@ Lesson 1: Introduction to R
 
 #Assignments
 - [Assignment 1 Working with Dataframes](https://github.com/davidj9/predictive-analytics-course/blob/main/assignment1.R)
+- [Assignment 2 - Data Wrangling](https://github.com/davidj9/predictive-analytics-course/blob/main/231020_assignment2_final.R)
