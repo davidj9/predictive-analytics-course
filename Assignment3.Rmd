@@ -1,0 +1,160 @@
+---
+title: "Assignment3"
+output: html_document
+date: "2023-10-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment 3 - Using SQL in R
+
+-   Connecting with SQL server management studio
+
+-   1st step: install RODBC package for SQL connection
+
+-   Execute: install.packages("RODBC")
+
+-   This statement gives errors when run in the markdown file but should be executed before running it.
+
+```{=html}
+<!-- -->
+```
+-   2nd step: load the RODBC library
+
+```{r}
+library(RODBC)
+```
+
+-   3rd step: list the connection
+
+-   Syntax: variable_name \<- "odbcConnectionName", rows_at_time = 1)
+
+```{r}
+db_conn <- odbcConnect("myDatabase", rows_at_time = 1)
+```
+
+-   4th step: write the query
+
+-   syntax: queryName \<- "SQL query goes here"
+
+#### Query 1: Sales by Region
+
+```{r}
+regionSalesQuery <- "select st.[Group]    as Region,
+                            count(*)      as OrderCount,
+                            sum(TotalDue) as TotalSales
+                       from Sales.Customer         c,
+                            Sales.SalesOrderHeader sh,
+                            Sales.SalesTerritory   st
+                       where sh.CustomerID = c.CustomerID
+                         and c.TerritoryID = st.TerritoryID
+                       group by st.[Group]
+                       order by st.[Group]"
+```
+
+-   5th step: Load query results into dataframe
+
+```{r}
+regionSalesData <- sqlQuery(db_conn, 
+                            regionSalesQuery, 
+                            stringsAsFactors = FALSE)
+```
+
+#### Query 2: Sales and Profit by Product Model
+
+```{r}
+productProfitQuery <-"select pm.Name as Product,
+                             sum(sod.LineTotal) / 1000 as Sales,
+                             (sum(sod.LineTotal) 
+                                - sum(sod.OrderQty
+                                        * p.StandardCost)) / 1000 as Profit
+                        from Sales.SalesOrderDetail  sod,
+                             Production.Product      p,
+                             Production.ProductModel pm
+                        where sod.ProductID    = p.ProductID
+                          and p.ProductModelID = pm.ProductModelID
+                        group by pm.name
+                        order by Profit desc"
+```
+
+-   Load query results into dataframe
+
+```{r}
+productProfitData <- sqlQuery(db_conn, 
+                              productProfitQuery, 
+                              stringsAsFactors = FALSE)
+```
+
+#### Visualize Sales by Region data (query 1) in pie chart
+
+-   Load ggplot library
+
+```{r}
+library(ggplot2)
+```
+
+-   Calculate percentage of sales per region
+
+```{r}
+regionSalesData$fraction <- regionSalesData$TotalSales / sum(regionSalesData$TotalSales)
+regionSalesData$percentage <- round(regionSalesData$fraction * 100)
+```
+
+-   Plot pie chart of sales by regions
+
+-   Plot created in three steps for ease of understanding and debugging
+
+```{r}
+bp <- ggplot(regionSalesData, aes(x="", y=percentage, fill=Region)) +
+        geom_bar(width=1, stat = "identity")
+
+pie <- bp + coord_polar("y", start=0)
+
+pie + scale_fill_brewer("Regions") +
+  theme(axis.text.x=element_blank()) +
+  geom_text(aes(y = percentage/3 + c(0, cumsum(percentage)[-length(percentage)]),
+                label = percentage), size=5)
+```
+
+#### Visualize Most Profitable Product Models (query 2) in horizontal stacked bar chart
+
+-   Reduce full list of products to top 10
+
+```{r}
+productProfitDataTop10 <- head(productProfitData, 10) 
+```
+
+-   Load tidyr library
+
+```{r}
+library(tidyr)
+```
+
+-   Rearrange query results in long tidy format for use by ggplot
+
+```{r}
+long_top10 <- productProfitDataTop10 %>% 
+  pivot_longer(cols = c("Sales", "Profit"),
+               names_to = "KPI",
+               values_to = "Amount" )
+```
+
+-   Plot Sales and Profit by Product Model in horizontal stacked bar chart
+
+-   Plot created in two steps for ease of understanding and debugging
+
+```{r}
+p <- ggplot(long_top10, aes(x = Product, y = Amount)) +
+  geom_col(aes(fill = KPI), width = 0.7) +
+  labs(title = "Sales and Profit by Product Model (in thousand $)")
+
+p + coord_flip()
+```
+
+-   6th step: close the ODBC connection
+
+```{r}
+odbcClose(db_conn)
+```
