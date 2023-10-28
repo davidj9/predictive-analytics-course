@@ -12,7 +12,7 @@ Lesson 1: Introduction to R
   
 [code](https://github.com/davidj9/predictive-analytics-course/blob/main/class1-introduction-to-R.R)
 
-#Assignments
+# Assignments
 - [Assignment 1 Working with Dataframes](https://github.com/davidj9/predictive-analytics-course/blob/main/assignment1.R)
 - [Assignment 2 - Data Wrangling](https://github.com/davidj9/predictive-analytics-course/blob/main/231020_assignment2_final.R)
 - [Assignment 3 - Using SQL in R - Markdown File](https://github.com/davidj9/predictive-analytics-course/blob/main/Assignment3.Rmd)
