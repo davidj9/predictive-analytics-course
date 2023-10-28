@@ -18,3 +18,4 @@ Lesson 1: Introduction to R
 - [Assignment 3 - Using SQL in R - Markdown File](https://github.com/davidj9/predictive-analytics-course/blob/main/Assignment3.Rmd)
 - [Assignment 3 - Using SQL in R - Knit HTML File](https://github.com/davidj9/predictive-analytics-course/blob/main/Assignment3.html)
 - [Assignment 4 - Linear Regression](https://github.com/davidj9/predictive-analytics-course/blob/main/Assignment4.html)
+- [Assignment 5 - k-Means Algorithm](https://github.com/davidj9/predictive-analytics-course/blob/main/Assignment5.html)
